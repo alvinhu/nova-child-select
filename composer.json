@@ -1,0 +1,30 @@
+{
+    "name": "alvinhu/nova-child-select",
+    "description": "Laravel nova child field.",
+    "keywords": [
+        "laravel",
+        "nova",
+        "select"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Alvinhu\\ChildSelect\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Alvinhu\\ChildSelect\\FieldServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

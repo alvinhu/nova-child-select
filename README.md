@@ -18,13 +18,11 @@ Class have 2 special methods on top of default Select from Laravel Nova.
 `options` should be a callable. it will receive parent select field's value as first argument and should return an array to be shown on the child select field.
 
 
-### Example:
+### Example
 
 ```
 use Alvinhu\ChildSelect\ChildSelect;
-```
 
-```
 public function fields(Request $request)
     {
         return [

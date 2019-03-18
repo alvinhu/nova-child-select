@@ -30,7 +30,7 @@ public function fields(Request $request)
             ID::make()->sortable(),
 
             Select::make('Country')
-                ->options(Country::all()->map(function ($country) {
+                ->options(Country::all()->mapWithKeys(function ($country) {
                     return [$country->id => $country->name];
                 }))
                 ->rules('required'),
@@ -38,7 +38,7 @@ public function fields(Request $request)
             ChildSelect::make('City')
                 ->parent('country')
                 ->options(function ($value) { 
-                    City::whereCountry($value)->get()->map(function ($city) {
+                    City::whereCountry($value)->get()->mapWithKeys(function ($city) {
                         return [$city->id => $city->name];
                     });
                 })

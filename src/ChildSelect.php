@@ -19,7 +19,7 @@ class ChildSelect extends Field
 
     public function getOptions($parameters = [])
     {
-        $options = call_user_func($this->options, $parameters);
+        $options = call_user_func($this->options, (object)$parameters);
 
         $result = [];
         foreach ($options as $key => $option) {
@@ -32,9 +32,12 @@ class ChildSelect extends Field
         return $result;
     }
 
-    public function parent($attribute)
+    public function parent($attributes)
     {
-        $this->withMeta(['parentAttribute' => $attribute]);
+        if(!is_array($attributes))
+            $attributes = [$attributes];
+
+        $this->withMeta(['parentAttributes' => $attributes]);
         return $this;
     }
 }

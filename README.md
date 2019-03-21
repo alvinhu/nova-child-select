@@ -14,8 +14,14 @@ composer require alvinhu/nova-child-select
 
 ### Usage
 Class have 2 special methods on top of default Select from Laravel Nova.
+#### Single parent
 `parent` should be a select field or another child select this one depends on.
 `options` should be a callable. it will receive parent select field's value as first argument and should return an array to be shown on the child select field.
+
+#### Multiple parent
+`parents` should be an array of select fields or other child selects this one depends on.
+`options` should be a callable. it will receive all parent field's values as an object as the first argument and should return an array to be shown on the child select field.
+
 
 
 ### Example
@@ -35,10 +41,27 @@ public function fields(Request $request)
                 }))
                 ->rules('required'),
 
+            Select::make('Province')
+                ->options(Province::all()->mapWithKeys(function ($province) {
+                    return [$province->id => $province->name];
+                }))
+                ->rules('required'),
+
+            // Single parent
             ChildSelect::make('City')
                 ->parent('country')
                 ->options(function ($value) { 
                     City::whereCountry($value)->get()->mapWithKeys(function ($city) {
+                        return [$city->id => $city->name];
+                    });
+                })
+                ->rules('required'),
+
+            // Multiple parents
+            ChildSelect::make('City')
+                ->parents(['country','province'])
+                ->options(function ($parents) { 
+                    City::whereCountry($parents->country)->whereProvince($parents->province)->get()->mapWithKeys(function ($city) {
                         return [$city->id => $city->name];
                     });
                 })

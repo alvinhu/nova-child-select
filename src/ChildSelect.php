@@ -17,9 +17,14 @@ class ChildSelect extends Field
         return $this;
     }
 
-    public function getOptions($parameters = [])
+    public function getOptions($parameters = [], $multiParents)
     {
-        $options = call_user_func($this->options, (object)$parameters);
+        if($multiParents)
+            $parameters = (object)$parameters;
+        else
+            $parameters = reset($parameters);
+
+        $options = call_user_func($this->options, $parameters);
 
         $result = [];
         foreach ($options as $key => $option) {
@@ -32,12 +37,18 @@ class ChildSelect extends Field
         return $result;
     }
 
-    public function parent($attributes)
+    public function parent($attribute)
     {
-        if(!is_array($attributes))
-            $attributes = [$attributes];
+        return $this->parents([$attribute], false);
+    }
 
-        $this->withMeta(['parentAttributes' => $attributes]);
+    public function parents($attributes, $multiParents = true)
+    {
+        $this->withMeta([
+            'parentAttributes' => $attributes,
+            'multiParents' => $multiParents
+        ]);
+
         return $this;
     }
 }

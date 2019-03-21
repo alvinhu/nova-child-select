@@ -101,7 +101,8 @@ export default {
                             {
                                 resourceName: this.resourceName,
                                 attribute: this.field.attribute,
-                                parents: this.parentValues
+                                parents: this.parentValues,
+                                multiParents: this.field.multiParents
                             }
                     )
                     .then(response => {

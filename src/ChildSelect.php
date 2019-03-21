@@ -17,8 +17,13 @@ class ChildSelect extends Field
         return $this;
     }
 
-    public function getOptions($parameters = [])
+    public function getOptions($parameters = [], $multiParents)
     {
+        if($multiParents)
+            $parameters = (object)$parameters;
+        else
+            $parameters = reset($parameters);
+
         $options = call_user_func($this->options, $parameters);
 
         $result = [];
@@ -34,7 +39,16 @@ class ChildSelect extends Field
 
     public function parent($attribute)
     {
-        $this->withMeta(['parentAttribute' => $attribute]);
+        return $this->parents([$attribute], false);
+    }
+
+    public function parents($attributes, $multiParents = true)
+    {
+        $this->withMeta([
+            'parentAttributes' => $attributes,
+            'multiParents' => $multiParents
+        ]);
+
         return $this;
     }
 }

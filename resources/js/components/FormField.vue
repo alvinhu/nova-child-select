@@ -29,7 +29,7 @@ export default {
 
     data() {
         return {
-            parentValue: null,
+            parentValues: {},
             loaded: false,
             options: []
         };
@@ -37,6 +37,8 @@ export default {
 
     mounted() {
         this.watchedComponents.forEach(component => {
+            console.log("WATCHING "+ component.fieldAttribute)
+
             let attribute = "value";
 
             if (component.field.component === "belongs-to-field") {
@@ -46,10 +48,17 @@ export default {
             component.$watch(
                 attribute,
                 value => {
-                    this.parentValue =
+                    this.parentValues[component.fieldAttribute] =
                         value && attribute == "selectedResource"
                             ? value.value
                             : value;
+
+                    console.log("update options with ")
+                    console.log(component.fieldAttribute)
+                    console.log(value)
+
+                    console.log("parent values")
+                    console.log(this.parentValues)
 
                     this.updateOptions();
                 },
@@ -84,15 +93,17 @@ export default {
             this.loaded = false;
             this.options = [];
 
-            if (this.parentValue != null && this.parentValue != "") {
+            if (this.parentValue != {}) {
                 Nova.request()
-                    .get(
+                    .post(
                         "/nova-vendor/child-select/options?resource=" +
-                            this.resourceName +
-                            "&attribute=" +
-                            this.field.attribute +
-                            "&parent=" +
-                            this.parentValue
+                            this.resourceName,
+                            {
+                                resourceName: this.resourceName,
+                                attribute: this.field.attribute,
+                                parents: this.parentValues,
+                                multiParents: this.field.multiParents
+                            }
                     )
                     .then(response => {
                         this.loaded = true;
@@ -111,7 +122,7 @@ export default {
         isWatchingComponent(component) {
             return (
                 component.field !== undefined &&
-                component.field.attribute == this.field.parentAttribute
+                this.field.parentAttributes.includes(component.field.attribute)
             );
         }
     }

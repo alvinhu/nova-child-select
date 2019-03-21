@@ -13,7 +13,7 @@ composer require alvinhu/nova-child-select
 ```
 
 ### Usage
-Class have 2 special methods on top of default Select from Laravel Nova.
+Class have 3 special methods on top of default Select from Laravel Nova.
 #### Single parent
 `parent` should be a select field or another child select this one depends on.
 `options` should be a callable. it will receive parent select field's value as first argument and should return an array to be shown on the child select field.

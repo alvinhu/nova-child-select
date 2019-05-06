@@ -2,4 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/options', 'OptionsController@index');
+Route::get('/options/{resource}', 'OptionsController@index');

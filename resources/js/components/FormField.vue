@@ -86,14 +86,12 @@ export default {
 
             if (this.parentValue != null && this.parentValue != "") {
                 Nova.request()
-                    .get(
-                        "/nova-vendor/child-select/options?resource=" +
-                            this.resourceName +
-                            "&attribute=" +
-                            this.field.attribute +
-                            "&parent=" +
-                            this.parentValue
-                    )
+                    .get(`/nova-vendor/child-select/options/${this.resourceName}`, {
+                        params: {
+                            attribute: this.field.attribute,
+                            parent: this.parentValue
+                        }
+                    })
                     .then(response => {
                         this.loaded = true;
                         this.options = response.data;

@@ -15,6 +15,18 @@ class OptionsController extends Controller
         $resource = $request->newResource();
         $fields = $resource->updateFields($request);
         $field = $fields->findFieldByAttribute($attribute);
+        if (!$field)
+        {
+            if ($fields->count() == 1 && isset($fields['Tabs']))
+            {
+                $tab = $fields->first();
+                if (isset($tab['fields']))
+                {
+                    $fields = $tab['fields'];
+                    $field = $fields->findFieldByAttribute($attribute);
+                }
+            }
+        }
         $options = $field->getOptions($parentValue);
 
         return $options;

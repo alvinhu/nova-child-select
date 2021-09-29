@@ -24,6 +24,12 @@ class OptionsController extends Controller
         foreach ($fieldObj as $field){
             if(gettype($field) == "array" && $field["component"] == "tabs"){
                 foreach ($field["fields"] as $value){
+                    if($value->component != "child-select" && $value->component && array_key_exists("fields",$value->meta)){
+                        $data =  $this->getChildSelect($value->meta,$attribute);
+                        if($data !== null){
+                            return $data;
+                        }
+                    }
                     if (isset($value->attribute) && $value->attribute == $attribute && $value->component == "child-select"){
                         return $value;
                     }
@@ -33,6 +39,14 @@ class OptionsController extends Controller
                     $field->attribute == $attribute){
                     return $field;
                 }
+            }
+        }
+    }
+
+    public function getChildSelect($field,$attribute){
+        foreach ($field["fields"] as $value){
+            if (isset($value->attribute) && $value->attribute == $attribute && $value->component == "child-select"){
+                return $value;
             }
         }
     }
